@@ -2,6 +2,5 @@
 
 size_t ft_put_char(int c) 
 {
-	ft_putchar_fd(c, 1);
-	return (1);
+	return (write(1, &c, 1));
 }

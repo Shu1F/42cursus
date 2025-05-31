@@ -2,12 +2,9 @@
 #include "libft.h"
 
 size_t ft_put_str(char *str) {
-    size_t len;
-
     if (!str)
-        str = "(NULL)";
+        return (write(1, "(null)", 6));
 
-    len = ft_strlen(str);
     ft_putstr_fd(str, 1);
-    return (len);
+    return (ft_strlen(str));
 }

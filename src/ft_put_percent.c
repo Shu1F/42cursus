@@ -2,6 +2,5 @@
 
 size_t ft_put_percent(void)
 {
-	ft_putchar_fd('%', 1);
-	return (1);
+	return (write(1, "%", 1));
 }

@@ -25,7 +25,7 @@ static size_t ft_select_format(va_list args, const char format) {
 }
 
 int ft_printf(const char *fmt, ...) {
-    va_list (args);
+    va_list args;
     va_start (args, fmt);
     size_t len;
 
@@ -33,14 +33,10 @@ int ft_printf(const char *fmt, ...) {
     while (*fmt) {
         if (*fmt != '%') 
             len += ft_put_char(*fmt);
-        else {
+        else 
+        {
             fmt++;
-            if (*fmt)
-                len += ft_select_format(args, *fmt);
-            else {
-                ft_putchar_fd(*fmt, 1);
-                len++;
-            }
+            len += ft_select_format(args, *fmt);
         }
         fmt++;
     }
