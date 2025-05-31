@@ -1,56 +1,54 @@
 ###################################################################
-#                             ft_printf                           #
-#   Minimal Makefile — builds libftprintf.a and depends on libft  #
+#                               ft_printf                               #
+#       builds libftprintf.a ― libft の必須関数も一緒に梱包       #
 ###################################################################
 
-# -----------------------------------------------------------------
-# Config
-# -----------------------------------------------------------------
-NAME        := libftprintf.a
+NAME        = libftprintf.a
 
-SRC_DIR     := src
-SRC         := $(SRC_DIR)/ft_printf.c \
-               $(SRC_DIR)/ft_put_char.c \
-               $(SRC_DIR)/ft_put_hexadecimal.c \
-               $(SRC_DIR)/ft_put_nbr.c \
-               $(SRC_DIR)/ft_put_percent.c \
-               $(SRC_DIR)/ft_put_pointer.c \
-               $(SRC_DIR)/ft_put_str.c \
-               $(SRC_DIR)/ft_put_unsigned.c
+SRC_DIR     = src
+LIBFT_DIR   = libft
 
-OBJ         := $(SRC:.c=.o)
+# ── ft_printf ソース ───────────────────────────────
+SRCS_PRINTF = \
+    $(SRC_DIR)/ft_printf.c \
+    $(SRC_DIR)/ft_put_char.c \
+    $(SRC_DIR)/ft_put_hexadecimal.c \
+    $(SRC_DIR)/ft_put_nbr.c \
+    $(SRC_DIR)/ft_put_percent.c \
+    $(SRC_DIR)/ft_put_pointer.c \
+    $(SRC_DIR)/ft_put_str.c \
+    $(SRC_DIR)/ft_put_unsigned.c
 
-# libft (sub‑module)
-LIBFT_DIR   := libft
-LIBFT       := $(LIBFT_DIR)/libft.a
+# ── libft から取り込む関数 ─────────────────────────
+SRCS_LIBFT = \
+    $(LIBFT_DIR)/ft_putchar_fd.c \
+    $(LIBFT_DIR)/ft_putstr_fd.c \
+    $(LIBFT_DIR)/ft_strlen.c
 
-# Compiler / flags
-CC          := gcc
-CFLAGS      := -Wall -Wextra -Werror -Iinclude -I$(LIBFT_DIR)
-AR          := ar rcs
-RM          := rm -f
+# 全ソース
+SRCS = $(SRCS_PRINTF) $(SRCS_LIBFT)
+OBJS = $(SRCS:.c=.o)
 
-# -----------------------------------------------------------------
-# Rules
-# -----------------------------------------------------------------
+# コンパイル設定
+CC          = gcc
+CFLAGS      = -Wall -Wextra -Werror -Iinclude -I$(LIBFT_DIR)
+AR          = ar rcs
+RM          = rm -f
+
+# ── Rules ─────────────────────────────────────────
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(OBJ)
-	$(AR) $@ $(OBJ)
-
-$(LIBFT):
-	$(MAKE) -C $(LIBFT_DIR)
+$(NAME): $(OBJS)
+	$(AR) $@ $^
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	$(RM) $(OBJ)
-	$(MAKE) -C $(LIBFT_DIR) clean
+	$(RM) $(OBJS)
 
 fclean: clean
 	$(RM) $(NAME)
-	$(MAKE) -C $(LIBFT_DIR) fclean
 
 re: fclean all
 
